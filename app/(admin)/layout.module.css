@@ -1,0 +1,8 @@
+
+.pages { 
+    width: 75%;
+    @media (max-width: $mantine-breakpoint-sm) { 
+        width: 100%;
+        padding: 0px;
+      }
+}

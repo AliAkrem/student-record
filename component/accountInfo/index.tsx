@@ -40,8 +40,8 @@ export function AccountInfo() {
             {user?.email}
           </Text>
           <Flex gap={'md'}>
-            <Text c="blue" size="lg" >last sign in at</Text>
-            <Text c="dimmed" size="lg">
+            <Text c="blue" size="md" >last sign-in</Text>
+            <Text c="dimmed" size="md">
               {user?.last_sign_in_at &&
                 new Date(user?.last_sign_in_at ?? "").toLocaleString()}
             </Text>

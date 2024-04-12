@@ -12,12 +12,16 @@ import {
   keys,
   Button,
   Flex,
+  ActionIcon,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconSelector,
   IconChevronDown,
   IconChevronUp,
   IconSearch,
+  IconEdit,
+  IconTrash,
 } from "@tabler/icons-react";
 import classes from "../table.module.css";
 import Link from "next/link";
@@ -93,7 +97,7 @@ function sortData(
 const data: RowData[] = [
   {
     Sno: "7b72dd4b-0efc-4f51-a88b-3bae3db1f9f3",
-    regNo:"79843",
+    regNo: "79843",
     name: "Adele",
     email: "Aliyah_Franecki@yahoo.com",
     mobNO: "1-373-514-9381 x84837",
@@ -102,7 +106,7 @@ const data: RowData[] = [
   },
   {
     Sno: "d03afe1c-a184-4755-9e3e-68f8746bce8f",
-    regNo:"58557",
+    regNo: "58557",
     name: "Lavada",
     email: "Tate23@yahoo.com",
     mobNO: "904-231-8572 x54570",
@@ -111,7 +115,7 @@ const data: RowData[] = [
   },
   {
     Sno: "116cf988-0435-4871-a08a-86bbf96d35df",
-    regNo:"84905",
+    regNo: "84905",
     name: "Sabryna",
     email: "Sandra46@gmail.com",
     mobNO: "(725) 566-4301 x6248",
@@ -120,7 +124,7 @@ const data: RowData[] = [
   },
   {
     Sno: "de20ce2d-3151-4b2d-861b-eb3971db49e4",
-    regNo:"22622",
+    regNo: "22622",
     name: "Amparo",
     email: "Kiana61@yahoo.com",
     mobNO: "324.582.0394 x0845",
@@ -129,7 +133,7 @@ const data: RowData[] = [
   },
   {
     Sno: "3cc7ef2e-2522-43ff-b243-238f095f067b",
-    regNo:"72840",
+    regNo: "72840",
     name: "Clay",
     email: "Evan39@hotmail.com",
     mobNO: "560-999-7683",
@@ -138,7 +142,7 @@ const data: RowData[] = [
   },
   {
     Sno: "a3396778-50e1-41e4-ac72-40a95d6a9360",
-    regNo:"77448",
+    regNo: "77448",
     name: "Sister",
     email: "Marina_Ferry@hotmail.com",
     mobNO: "779.378.9942",
@@ -147,7 +151,7 @@ const data: RowData[] = [
   },
   {
     Sno: "13c5a896-030f-4a85-8b32-1367773ca7fb",
-    regNo:"24746",
+    regNo: "24746",
     name: "Sean",
     email: "Hayden_Hagenes84@gmail.com",
     mobNO: "544-524-1536",
@@ -156,7 +160,7 @@ const data: RowData[] = [
   },
   {
     Sno: "24592aa1-a41a-4f75-836f-0ae845065715",
-    regNo:"95672",
+    regNo: "95672",
     name: "Cecilia",
     email: "Raymundo94@hotmail.com",
     mobNO: "1-237-467-2322",
@@ -165,7 +169,7 @@ const data: RowData[] = [
   },
   {
     Sno: "331daaae-b154-4610-8364-5e32f2ce9fef",
-    regNo:"61978",
+    regNo: "61978",
     name: "Brielle",
     email: "Rashad55@yahoo.com",
     mobNO: "(476) 543-7725 x529",
@@ -174,7 +178,7 @@ const data: RowData[] = [
   },
   {
     Sno: "488a05a6-290c-438f-a2a1-78fcd5fb736d",
-    regNo:"50088",
+    regNo: "50088",
     name: "Marianne",
     email: "Kailey.Hegmann@gmail.com",
     mobNO: "725.353.0129 x46615",
@@ -183,7 +187,7 @@ const data: RowData[] = [
   },
   {
     Sno: "e70fb955-6cd6-4d25-8b6b-1db46205cc8d",
-    regNo:"84549",
+    regNo: "84549",
     name: "Donato",
     email: "Kathleen.Jast40@hotmail.com",
     mobNO: "1-565-313-4420",
@@ -192,7 +196,7 @@ const data: RowData[] = [
   },
   {
     Sno: "84e0339f-a7cf-43db-a9bc-8bc6c0201a64",
-    regNo:"99110",
+    regNo: "99110",
     name: "Samanta",
     email: "Raymond69@hotmail.com",
     mobNO: "983-389-7411 x4206",
@@ -226,16 +230,26 @@ export function StudentTable() {
     <Table.Tr key={row.Sno}>
       <Table.Td px={"xs"}>
         <Flex gap={"8px"}>
-          <Button component={Link} href={`/students/edit?Sno=${row.Sno}`}>
-            edit
-          </Button>
-          <Button color="red">delete</Button>
+          <ActionIcon
+            variant="transparent"
+            component={Link}
+            href={`/students/edit?Sno=${row.Sno}`}
+          >
+            <IconEdit />
+          </ActionIcon>
+          <ActionIcon variant="transparent" color="red">
+            <IconTrash />
+          </ActionIcon>
         </Flex>
       </Table.Td>
       <Table.Td>{row.Sno}</Table.Td>
       <Table.Td>{row.regNo}</Table.Td>
       <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
+      <Table.Td>
+        <Tooltip label={row.email}   >
+        <Text truncate="end">{row.email} </Text>
+        </Tooltip>
+      </Table.Td>
       <Table.Td>{row.mobNO}</Table.Td>
       <Table.Td>{row.course}</Table.Td>
       <Table.Td>{row.subject}</Table.Td>
@@ -261,7 +275,7 @@ export function StudentTable() {
           w={"1400px"}
           horizontalSpacing="md"
           verticalSpacing="xs"
-          miw={700}
+          miw={1000}
           layout="fixed"
         >
           <Table.Tbody>

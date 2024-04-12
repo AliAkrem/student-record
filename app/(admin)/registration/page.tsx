@@ -7,8 +7,8 @@ import AcademicInformationForm from "../../../component/forms/academicInformatio
 export default function RegistrationPage() {
   return (
     <>
-      <RegisterCourse  />
-      <PersonalInformationForm  />
+      <RegisterCourse />
+      <PersonalInformationForm />
       <ContactInformationForm />
       <AcademicInformationForm />
     </>

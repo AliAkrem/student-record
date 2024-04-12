@@ -10,15 +10,16 @@ import {
   TextInput,
   rem,
   keys,
-  Button,
   Flex,
-  Box,
+  ActionIcon,
 } from "@mantine/core";
 import {
   IconSelector,
   IconChevronDown,
   IconChevronUp,
   IconSearch,
+  IconEdit,
+  IconTrash,
 } from "@tabler/icons-react";
 import classes from "../table.module.css";
 
@@ -213,15 +214,24 @@ export function SubjectTable() {
 
   const rows = sortedData.map((row) => (
     <Table.Tr key={row.Sno}>
-      <Table.Td px={"xs"}>
+      <Table.Td>
         <Flex gap={"8px"}>
-          <Button component={Link} href={`/subject/edit?Sno=${row.Sno}`}>
-            edit
-          </Button>
-          <Button color="red">delete</Button>
+          <ActionIcon
+            variant="transparent"
+            component={Link}
+            href={`/subject/edit?Sno=${row.Sno}`}
+          >
+            <IconEdit />
+          </ActionIcon>
+          <ActionIcon variant="transparent" color="red">
+            <IconTrash />
+          </ActionIcon>
         </Flex>
       </Table.Td>
-      <Table.Td>{row.Sno}</Table.Td>
+      <Table.Td>
+        {" "}
+        <Text truncate="end"> {row.Sno} </Text>{" "}
+      </Table.Td>
       <Table.Td>{row.course}</Table.Td>
       <Table.Td>{row.subject1}</Table.Td>
       <Table.Td>{row.subject2}</Table.Td>
@@ -245,81 +255,79 @@ export function SubjectTable() {
         onChange={handleSearchChange}
       />
       <ScrollArea>
-        <Box w={"1200px"}>
-          <Table
-            horizontalSpacing="md"
-            verticalSpacing="xs"
-            miw={700}
-            layout="fixed"
-          >
-            <Table.Tbody>
+        <Table
+          horizontalSpacing="md"
+          verticalSpacing="xs"
+          miw={1300}
+          layout="fixed"
+        >
+          <Table.Tbody>
+            <Table.Tr>
+              <Th
+                sorted={sortBy === "Sno"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("Sno")}
+              >
+                Action
+              </Th>
+              <Th
+                sorted={sortBy === "Sno"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("Sno")}
+              >
+                SNo
+              </Th>
+              <Th
+                sorted={sortBy === "course"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("course")}
+              >
+                Course
+              </Th>
+              <Th
+                sorted={sortBy === "subject1"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("subject1")}
+              >
+                Subject 1
+              </Th>
+              <Th
+                sorted={sortBy === "subject2"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("subject2")}
+              >
+                Subject 2
+              </Th>
+              <Th
+                sorted={sortBy === "subject3"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("subject4")}
+              >
+                Subject 3
+              </Th>
+              <Th
+                sorted={sortBy === "subject4"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("subject4")}
+              >
+                Subject 4
+              </Th>
+            </Table.Tr>
+          </Table.Tbody>
+          <Table.Tbody>
+            {rows.length > 0 ? (
+              rows
+            ) : (
               <Table.Tr>
-                <Th
-                  sorted={sortBy === "Sno"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("Sno")}
-                >
-                  Action
-                </Th>
-                <Th
-                  sorted={sortBy === "Sno"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("Sno")}
-                >
-                  SNo
-                </Th>
-                <Th
-                  sorted={sortBy === "course"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("course")}
-                >
-                  Course
-                </Th>
-                <Th
-                  sorted={sortBy === "subject1"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("subject1")}
-                >
-                  Subject 1
-                </Th>
-                <Th
-                  sorted={sortBy === "subject2"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("subject2")}
-                >
-                  Subject 2
-                </Th>
-                <Th
-                  sorted={sortBy === "subject3"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("subject4")}
-                >
-                  Subject 3
-                </Th>
-                <Th
-                  sorted={sortBy === "subject4"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("subject4")}
-                >
-                  Subject 4
-                </Th>
+                <Table.Td colSpan={Object.keys(data[0]).length}>
+                  <Text fw={500} ta="center">
+                    Nothing found
+                  </Text>
+                </Table.Td>
               </Table.Tr>
-            </Table.Tbody>
-            <Table.Tbody>
-              {rows.length > 0 ? (
-                rows
-              ) : (
-                <Table.Tr>
-                  <Table.Td colSpan={Object.keys(data[0]).length}>
-                    <Text fw={500} ta="center">
-                      Nothing found
-                    </Text>
-                  </Table.Td>
-                </Table.Tr>
-              )}
-            </Table.Tbody>
-          </Table>
-        </Box>
+            )}
+          </Table.Tbody>
+        </Table>
       </ScrollArea>
     </>
   );

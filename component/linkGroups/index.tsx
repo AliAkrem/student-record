@@ -9,6 +9,7 @@ import {
   Text,
   UnstyledButton,
   rem,
+  ActionIcon,
 } from "@mantine/core";
 import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
 import classes from "./linkgroup.module.css";
@@ -33,6 +34,7 @@ export function LinksGroup({
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
     <Text
+      fz={'md'}
       component={Link}
       href={link.link}
       className={classes.link}
@@ -47,7 +49,6 @@ export function LinksGroup({
       <UnstyledButton
         component={Link}
         href={link ?? "#"}
-        onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >
         <Group justify="space-between" gap={0}>
@@ -55,22 +56,11 @@ export function LinksGroup({
             <ThemeIcon variant="light" size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
-            <Box ml="md">{label}</Box>
+            <Box ml="md"><Text fz={'lg'} >{label}</Text> </Box>
           </Box>
-          {hasLinks && (
-            <IconChevronRight
-              className={classes.chevron}
-              stroke={1.5}
-              style={{
-                width: rem(16),
-                height: rem(16),
-                transform: opened ? "rotate(-90deg)" : "none",
-              }}
-            />
-          )}
         </Group>
       </UnstyledButton>
-      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+      {hasLinks ? <Collapse in={true}>{items}</Collapse> : null}
     </>
   );
 }

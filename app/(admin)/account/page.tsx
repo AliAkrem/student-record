@@ -1,8 +1,6 @@
 import React from "react";
-import { createClient } from "../../../utils/supabase/server";
 import ChangePassword from "../../../component/forms/changePassword";
 import { AccountInfo } from "../../../component/accountInfo";
-import { changePassword } from "./changePassword/action";
 import { Alert } from "@mantine/core";
 import { IconAlertTriangle } from "@tabler/icons-react";
 

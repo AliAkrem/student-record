@@ -6,12 +6,15 @@ import {
   Container,
   Button,
   LoadingOverlay,
+  Center,
+  Title,
 } from "@mantine/core";
 import { login } from "../../app/login/action";
 import { isEmail, isNotEmpty, useForm } from "@mantine/form";
 import { combineValidators } from "../../utils/validators/combinevalidator";
 import { isStrongPassword } from "../../utils/validators/validateSchema";
 import { useTransition } from "react";
+import { useMediaQuery } from "@mantine/hooks";
 
 export function LoginCard() {
   const form = useForm({
@@ -20,11 +23,11 @@ export function LoginCard() {
       password: "",
     },
     validate: {
-      email: combineValidators(isNotEmpty("filed can not be empty"), isEmail()),
+      email: combineValidators(isNotEmpty("Filed can not be empty"), isEmail("Invalid email address")),
       password: combineValidators(
-        isNotEmpty("filed can not be empty"),
+        isNotEmpty("Filed can not be empty"),
         isStrongPassword(
-          "password must contain at least 8 character, lowercase, uppercase and  numbers "
+          "Password must contain at least 8 character, lowercase, uppercase and number "
         )
       ),
     },
@@ -32,9 +35,12 @@ export function LoginCard() {
 
   const [pending, startTransition] = useTransition();
 
+  const match = useMediaQuery("(min-width : 36em)")
+
   return (
-    <Container size={420} my={40}>
-      <Paper pos={"relative"} withBorder shadow="md" p={30} mt={30} radius="md">
+    <Container  w={match ? 500 : "100%"}  p={10} my={40}>
+      <Title ta={"center"}>Sign-in</Title>
+      <Paper pos={"relative"} withBorder shadow="md" p={20} mt={30} radius="md">
         <LoadingOverlay visible={pending} />
 
         <form
@@ -49,12 +55,10 @@ export function LoginCard() {
             placeholder="username@example.com"
             {...form.getInputProps("email")}
             disabled={pending}
-            required
           />
           <PasswordInput
             label="Password"
             placeholder="Your password"
-            required
             {...form.getInputProps("password")}
             disabled={pending}
             mt="md"

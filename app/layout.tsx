@@ -1,9 +1,9 @@
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 
-
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import { theme } from "../theme";
 
 export const metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider defaultColorScheme="dark" theme={theme}>
-          {children}
+          <ModalsProvider>{children}</ModalsProvider>
         </MantineProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import {
   Group,
   Paper,
   Select,
+  SimpleGrid,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -34,7 +35,7 @@ export default function ContactInformationForm({ fn, contactInfo }: Props) {
 
           <Divider my={"lg"} />
 
-          <Group grow justify="space-between" mt={"md"}>
+          <SimpleGrid cols={{ base: 1, xs: 2, sm: 2, lg: 3 }} mt={"md"}>
             <TextInput
               id="mobileNumber"
               name="mobileNumber"
@@ -60,9 +61,6 @@ export default function ContactInformationForm({ fn, contactInfo }: Props) {
               required
               defaultValue={contactInfo?.city ?? ""}
             />
-          </Group>
-
-          <Group grow justify="space-between" mt={"md"}>
             <TextInput
               id="guardianName"
               name="guardianName"
@@ -88,12 +86,8 @@ export default function ContactInformationForm({ fn, contactInfo }: Props) {
               required
               defaultValue={contactInfo?.email ?? ""}
             />
-          </Group>
-
-          <Group grow justify="space-between" mt={"md"}>
             <Select
-
-              data={['alg']}
+              data={["alg"]}
               id="state"
               name="state"
               label="State"
@@ -110,7 +104,7 @@ export default function ContactInformationForm({ fn, contactInfo }: Props) {
               required
               defaultValue={contactInfo?.pAddress ?? ""}
             />
-          </Group>
+          </SimpleGrid>
         </Paper>
       </Container>
     </>

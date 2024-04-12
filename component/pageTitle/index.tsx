@@ -1,5 +1,5 @@
 "use client";
-import { Title } from "@mantine/core";
+import { Divider, Title } from "@mantine/core";
 import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -15,20 +15,22 @@ export default function PageTitle() {
       ? "Registration"
       : pathname.split("/")[1] === "account"
       ? "Account"
-      :
-      pathname.split("/")[1] === "students"
+      : pathname.split("/")[1] === "students"
       ? "Students"
-      :
-      pathname.split("/")[1] === "season"
+      : pathname.split("/")[1] === "season"
       ? "Season"
-
       : "Dashboard";
 
   return (
     <>
-      <Title order={2} fw={"lighter"}>
-        {pageName}
-      </Title>
+      <Divider
+        label={
+          <Title pl={"20px"} order={2} fw={"lighter"}>
+            {pageName}
+          </Title>
+        }
+        labelPosition="left"
+      />
     </>
   );
 }

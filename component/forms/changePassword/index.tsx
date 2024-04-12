@@ -20,9 +20,9 @@ export default function ChangePassword() {
     },
     validate: {
       password: combineValidators(
-        isNotEmpty("password is empty"),
+        isNotEmpty("Password can not be empty"),
         isStrongPassword(
-          "password contain at least 8 character, lowercase, uppercase and  numbers"
+          "Password contain at least 8 character, lowercase, uppercase and  numbers"
         )
       ),
       confirm: matchesField("password", "Passwords are not the same"),
@@ -50,7 +50,6 @@ export default function ChangePassword() {
               label="New Password"
               placeholder="New Password"
               {...form.getInputProps("password")}
-              required
               mt="md"
             />
             <PasswordInput
@@ -59,7 +58,6 @@ export default function ChangePassword() {
               label="Confirm Password"
               placeholder="Confirm Password"
               {...form.getInputProps("confirm")}
-              required
               mt="md"
             />
             <Button disabled={pending} type="submit" fullWidth mt="xl">

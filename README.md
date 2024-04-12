@@ -15,6 +15,14 @@ The Student Record System is a web-based application designed to efficiently man
 - **Change Password:** Allow admins to update their login credentials.
 - **Admin Profile:** Update admin profile details as required.
 - **Logout:** Securely log out of the system.
+  
+## webiste Preview 
+  [student record](https://student-record-navy.vercel.app/)
+  ### admin credentials 
+- **email:** `admin@univ.com`
+- **password:** `'3p&;_;U*g'rsqe`
+  
+  
 
 ## Installation
 

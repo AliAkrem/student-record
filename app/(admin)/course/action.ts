@@ -53,9 +53,7 @@ export async function updateCourse({
     data = { ...data, abv_name: newAbvName };
   }
 
-  console.log(data);
 
-  //   return ;
 
   if (Object.keys(data).length <= 0) {
     return;

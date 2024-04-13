@@ -6,7 +6,6 @@ type Props = {
 };
 
 export default function EditPage({ searchParams }: Props) {
-  console.log(searchParams.Sno);
 
   const subject= {
     Sno: "03af84c9-ee83-4d94-a41f-0da9036d36b0",

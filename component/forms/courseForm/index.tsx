@@ -1,13 +1,25 @@
 "use client";
-import { Button, Container, Paper, TextInput } from "@mantine/core";
-import { DateInput, DateValue } from "@mantine/dates";
-import React from "react";
+import {
+  Button,
+  Container,
+  LoadingOverlay,
+  Paper,
+  TextInput,
+} from "@mantine/core";
+import { hasLength, isNotEmpty, matches, useForm } from "@mantine/form";
+import React, { useTransition } from "react";
+import { combineValidators } from "../../../utils/validators/combinevalidator";
+import {
+  addCourse,
+  updateCourse,
+} from "../../../app/(admin)/course/action";
 
 type Course = {
-  SNo: string;
-  shortName: string;
-  fullName: string;
-  CreatedAt: DateValue;
+  course_id: number;
+  name: string;
+  abv_name: string;
+  created_at: string;
+  updated_at: string;
 };
 
 type Props = {
@@ -16,36 +28,80 @@ type Props = {
 };
 
 export default function CourseForm({ fn, course }: Props) {
+  const form = useForm({
+    initialValues: {
+      name: fn === "edit" ? course?.name ?? "" : "",
+      abvName: fn === "edit" ? course?.abv_name ?? "" : "",
+    },
+    validate: {
+      name: combineValidators(
+        isNotEmpty("Filed can not be empty"),
+        hasLength({ max: 35 }, "Value must have 35 or less characters"),
+        hasLength({ min: 6 }, "Value must have 6  or more characters")
+      ),
+      abvName: combineValidators(
+        isNotEmpty("Filed can not be empty"),
+        hasLength({ max: 12 }, "Value must have 12 or less characters"),
+        hasLength({ min: 3 }, "Value must have 3  or more characters")
+      ),
+    },
+  });
+
+  const [pending, startTransition] = useTransition();
+
   return (
     <Container fluid my={40}>
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form>
+      <Paper pos={"relative"} withBorder shadow="md" p={30} mt={30} radius="md">
+        <LoadingOverlay visible={pending} />
+        <form
+          onSubmit={form.onSubmit((values) => {
+            startTransition(() => {
+              if (fn === "create") {
+                addCourse(values);
+              } else if (fn === "edit") {
+                if (course) {
+                  updateCourse({
+                    courseId: course?.course_id,
+                    newAbvName: values.abvName,
+                    newName: values.name,
+                    oldAbvName: course?.abv_name,
+                    oldName: course?.name,
+                  });
+                }
+              }
+            });
+          })}
+        >
           <TextInput
-            id="shortName"
-            name="shortName"
-            label="Short Name"
-            type="text"
-            defaultValue={course?.shortName ?? ""}
-            placeholder="example : B.TECH(BACHELOR OF TECHNOLOGY)"
-            required
-          />
-          <TextInput
-            id="fullName"
-            name="fullName"
             label="Full Name"
-            defaultValue={course?.fullName ?? ""}
             placeholder="example : BACHELOR OF TECHNOLOGY"
-            required
-            mt="md"
+            {...form.getInputProps("name")}
+            disabled={pending}
           />
-          <DateInput
+          <TextInput
             mt="md"
-            defaultValue={course?.CreatedAt ?? new Date()}
-            label="Create Date"
-            disabled
+            label="Abbreviation"
+            type="text"
+            placeholder="example : B.TECH(BACHELOR OF TECHNOLOGY)"
+            {...form.getInputProps("abvName")}
+            disabled={pending}
           />
 
-          <Button type="submit" fullWidth mt="xl">
+          <Button
+            type="submit"
+            fullWidth
+            mt="xl"
+            disabled={
+              pending ||
+              (fn === "edit" &&
+                !new RegExp("^(?!(\\s*" + course?.name + "\\s*)$).*$").test(
+                  form.values.name
+                ) &&
+                !new RegExp("^(?!(\\s*" + course?.abv_name + "\\s*)$).*$").test(
+                  form.values.abvName!
+                ))
+            }
+          >
             save
           </Button>
         </form>

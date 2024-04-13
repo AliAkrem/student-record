@@ -55,9 +55,9 @@ export function NavbarNested() {
       children: <Text size="sm">Are you sure you want to sign-out?</Text>,
       labels: { confirm: "Sign-out", cancel: "Cancel" },
       confirmProps: { color: "red" },
-      onConfirm: () => {
-        supabase.auth.signOut();
-        router.replace("/login");
+      onConfirm: async () => {
+        await supabase.auth.signOut();
+        router.refresh();
       },
     });
 

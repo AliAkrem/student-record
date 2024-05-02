@@ -1,74 +1,136 @@
 "use client";
-import { Button, Container, Paper, Select, TextInput } from "@mantine/core";
-import React from "react";
-
-type Subject = {
-  Sno: string;
-  course: string;
-  subject1: string;
-  subject2: string;
-  subject3: string;
-  subject4: string;
-};
+import {
+  ActionIcon,
+  Button,
+  Container,
+  Paper,
+  Select,
+  SimpleGrid,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { hasLength, isNotEmpty, useForm } from "@mantine/form";
+import { IconPlus, IconX } from "@tabler/icons-react";
+import React, { useState } from "react";
+import { combineValidators } from "../../../utils/validators/combinevalidator";
+import { randomId } from "@mantine/hooks";
+import { upsertSubjects } from "../../../app/(admin)/subject/actions";
 
 type Props = {
   fn: "edit" | "create";
-  subject?: Subject;
+  course: {
+    value: string;
+    label: any;
+    subjects: { name: string; subject_id?: string }[];
+  }[];
+
+  initialCourse?: {
+    value: string;
+    label: any;
+    subjects: { name: string; subject_id?: string }[];
+  };
 };
 
-export default function SubjectForm({ fn, subject }: Props) {
+export default function SubjectForm({ fn, initialCourse, course }: Props) {
+
+  const [subjectNbr, setSubjectNbr] = useState<number>(
+    initialCourse?.subjects.length ?? 0
+  );
+
+
+  const form = useForm({
+    initialValues: {
+      course_id: initialCourse?.value ?? "",
+      subjects: initialCourse?.subjects ?? [{ name: "" }],
+    },
+    validate: {
+      course_id: isNotEmpty("Filed can not be empty"),
+      subjects: {
+        name: combineValidators(
+          isNotEmpty("Filed can not be empty"),
+          hasLength(
+            { min: 3, max: 40 },
+            "Subject length must be between 3 and 40"
+          )
+        ),
+      },
+    },
+
+    onValuesChange(values, previous) {
+      if (values.course_id !== "" && previous.course_id != values.course_id) {
+        let subs = course.filter((cs) => {
+          return cs.value === values.course_id;
+        })[0]?.subjects;
+
+        if (subs) {
+          form.setValues({
+            subjects: subs,
+          });
+
+          setSubjectNbr(subs.length);
+          form.resetDirty({ course_id: values.course_id, subjects: subs });
+          // form.resetTouched();
+        }
+      }
+    },
+  });
+
+ 
+  console.log(form.isDirty());
+
+  const subjectsFiled = form.values.subjects.map((item, index) => (
+    <TextInput
+      key={index}
+      leftSection={
+        <ActionIcon
+          disabled={index < subjectNbr}
+          variant="transparent"
+          color="red"
+          size={"lg"}
+          onClick={() => form.removeListItem("subjects", index)}
+        >
+          <IconX />
+        </ActionIcon>
+      }
+      label={<Text display={"inline"}>Subject {index + 1} </Text>}
+      placeholder="example : C LANGUAGE"
+      {...form.getInputProps(`subjects.${index}.name`)}
+      withAsterisk
+    />
+  ));
+
   return (
     <Container fluid my={40}>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form>
+        <form
+          onSubmit={form.onSubmit((values) => {
+            upsertSubjects(values);
+          })}
+        >
           <Select
-            data={['AW(Athena  DD Weissnat1)', 'AE(Athena  DD Weissnat1)']}
-            id="course"
-            name="course"
+            data={course}
             label="Course"
             type="text"
-            defaultValue={subject?.course ?? ""}
             placeholder="example : BACHELOR OF TECHNOLOGY"
             required
+            {...form.getInputProps("course_id")}
           />
-          <TextInput
-            id="subject1"
-            name="subject1"
-            label="Subject 1"
-            defaultValue={subject?.subject1 ?? ""}
-            placeholder="example : C LANGUAGE"
-            
-            mt="md"
-          />
-          <TextInput
-            id="subject2"
-            name="subject2"
-            label="Subject 2"
-            defaultValue={subject?.subject2 ?? ""}
-            placeholder="example : OPERATING SYSTEM"
-            
-            mt="md"
-          />
-          <TextInput
-            id="subject3"
-            name="subject3"
-            label="Subject 3"
-            defaultValue={subject?.subject3 ?? ""}
-            placeholder="example : DATA STRUCTURE"
-            
-            mt="md"
-          />
-          <TextInput
-           id="subject4"
-           name="subject4"
-           label="Subject 4"
-            defaultValue={subject?.subject4 ?? ""}
-            placeholder="example : MATHMATICS"
-            
-            mt="md"
-          />
+          <SimpleGrid cols={{ base: 1, sm: 1, md: 2, lg: 3 }} mt={"md"}>
+            {subjectsFiled}
+          </SimpleGrid>
+          <br />
+          <ActionIcon
+            size={"lg"}
+            onClick={() =>
+              form.insertListItem("subjects", {
+                name: "",
+              })
+            }
+          >
+            <IconPlus />
+          </ActionIcon>
 
-          <Button type="submit" fullWidth mt="xl">
+          <Button disabled={!form.isDirty() || !form.values.course_id  }  type="submit" fullWidth mt="xl">
             save
           </Button>
         </form>

@@ -1,0 +1,21 @@
+.container { 
+
+    padding: rem(10px);
+    margin:  rem(40px auto);
+    width: rem(500px);
+    @media (max-width: $mantine-breakpoint-xs) { 
+        width: 100%;
+      }
+
+}
+
+
+.title { 
+  text-align: center;
+}
+
+.inner { 
+  position: relative;
+  padding: rem(20px); 
+  margin-top: rem(30px);
+}

@@ -9,10 +9,8 @@ import {
 import { hasLength, isNotEmpty, matches, useForm } from "@mantine/form";
 import React, { useTransition } from "react";
 import { combineValidators } from "../../../utils/validators/combinevalidator";
-import {
-  addCourse,
-  updateCourse,
-} from "../../../app/(admin)/course/action";
+import { addCourse, updateCourse } from "../../../app/(admin)/course/action";
+import { DateTimePicker } from "@mantine/dates";
 
 type Course = {
   course_id: number;
@@ -42,7 +40,7 @@ export default function CourseForm({ fn, course }: Props) {
       abvName: combineValidators(
         isNotEmpty("Filed can not be empty"),
         hasLength({ max: 12 }, "Value must have 12 or less characters"),
-        hasLength({ min: 3 }, "Value must have 3  or more characters")
+        hasLength({ min: 2 }, "Value must have 2  or more characters")
       ),
     },
   });
@@ -86,6 +84,22 @@ export default function CourseForm({ fn, course }: Props) {
             {...form.getInputProps("abvName")}
             disabled={pending}
           />
+          {fn === "edit" ? (
+            <>
+              <DateTimePicker
+                mt="md"
+                label="Created At"
+                value={new Date(course?.created_at!)}
+                disabled
+              />
+              <DateTimePicker
+                mt="md"
+                label="Last Updated At"
+                value={new Date(course?.updated_at!)}
+                disabled
+              />
+            </>
+          ) : null}
 
           <Button
             type="submit"

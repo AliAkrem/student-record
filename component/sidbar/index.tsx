@@ -16,7 +16,6 @@ import classes from "./navbarnestd.module.css";
 import { ColorSchemeButton } from "../colorSchemeButton";
 import { createClient } from "../../utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { Header } from "../navbar";
 import { modals } from "@mantine/modals";
 
 const mockdata = [
@@ -31,7 +30,6 @@ const mockdata = [
     label: "Subject",
     icon: IconCalendarStats,
     link: "/subject",
-    links: [{ label: "Add Subject", link: "/subject/add" }],
   },
   { label: "Register", icon: IconUser, link: "/registration" },
   { label: "Students", icon: IconUsersGroup, link: "/students" },

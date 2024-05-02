@@ -6,7 +6,6 @@ import {
   Container,
   Button,
   LoadingOverlay,
-  Center,
   Title,
 } from "@mantine/core";
 import { login } from "../../app/login/action";
@@ -16,6 +15,8 @@ import { isStrongPassword } from "../../utils/validators/validateSchema";
 import { useTransition } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 
+import classes from "./login.module.css";
+
 export function LoginCard() {
   const form = useForm({
     initialValues: {
@@ -23,7 +24,10 @@ export function LoginCard() {
       password: "",
     },
     validate: {
-      email: combineValidators(isNotEmpty("Filed can not be empty"), isEmail("Invalid email address")),
+      email: combineValidators(
+        isNotEmpty("Filed can not be empty"),
+        isEmail("Invalid email address")
+      ),
       password: combineValidators(
         isNotEmpty("Filed can not be empty"),
         isStrongPassword(
@@ -35,12 +39,12 @@ export function LoginCard() {
 
   const [pending, startTransition] = useTransition();
 
-  const match = useMediaQuery("(min-width : 36em)")
+  const match = useMediaQuery("(min-width : 36em)");
 
   return (
-    <Container  w={match ? 500 : "100%"}  p={10} my={40}>
-      <Title ta={"center"}>Sign-in</Title>
-      <Paper pos={"relative"} withBorder shadow="md" p={20} mt={30} radius="md">
+    <Container className={classes.container}>
+      <Title className={classes.title}>Sign-in</Title>
+      <Paper className={classes.inner} withBorder shadow="md" radius="md">
         <LoadingOverlay visible={pending} />
 
         <form

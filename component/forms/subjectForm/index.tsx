@@ -3,6 +3,7 @@ import {
   ActionIcon,
   Button,
   Container,
+  LoadingOverlay,
   Paper,
   Select,
   SimpleGrid,
@@ -11,9 +12,8 @@ import {
 } from "@mantine/core";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { IconPlus, IconX } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { combineValidators } from "../../../utils/validators/combinevalidator";
-import { randomId } from "@mantine/hooks";
 import { upsertSubjects } from "../../../app/(admin)/subject/actions";
 
 type Props = {
@@ -32,11 +32,9 @@ type Props = {
 };
 
 export default function SubjectForm({ fn, initialCourse, course }: Props) {
-
   const [subjectNbr, setSubjectNbr] = useState<number>(
     initialCourse?.subjects.length ?? 0
   );
-
 
   const form = useForm({
     initialValues: {
@@ -75,22 +73,22 @@ export default function SubjectForm({ fn, initialCourse, course }: Props) {
     },
   });
 
- 
-  console.log(form.isDirty());
+  const [pending, setTransition] = useTransition();
 
   const subjectsFiled = form.values.subjects.map((item, index) => (
     <TextInput
       key={index}
       leftSection={
-        <ActionIcon
-          disabled={index < subjectNbr}
-          variant="transparent"
-          color="red"
-          size={"lg"}
-          onClick={() => form.removeListItem("subjects", index)}
-        >
-          <IconX />
-        </ActionIcon>
+        index >= subjectNbr && (
+          <ActionIcon
+            variant="transparent"
+            color="red"
+            size={"lg"}
+            onClick={() => form.removeListItem("subjects", index)}
+          >
+            <IconX />
+          </ActionIcon>
+        )
       }
       label={<Text display={"inline"}>Subject {index + 1} </Text>}
       placeholder="example : C LANGUAGE"
@@ -101,10 +99,13 @@ export default function SubjectForm({ fn, initialCourse, course }: Props) {
 
   return (
     <Container fluid my={40}>
+      <LoadingOverlay visible={pending} />
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form
           onSubmit={form.onSubmit((values) => {
-            upsertSubjects(values);
+            setTransition(async () => {
+              await upsertSubjects(values);
+            });
           })}
         >
           <Select
@@ -130,7 +131,12 @@ export default function SubjectForm({ fn, initialCourse, course }: Props) {
             <IconPlus />
           </ActionIcon>
 
-          <Button disabled={!form.isDirty() || !form.values.course_id  }  type="submit" fullWidth mt="xl">
+          <Button
+            disabled={!form.isDirty() || !form.values.course_id || pending}
+            type="submit"
+            fullWidth
+            mt="xl"
+          >
             save
           </Button>
         </form>

@@ -7,8 +7,6 @@ import { IconAlertTriangle } from "@tabler/icons-react";
 type Props = { searchParams: { [key: string]: string | string[] | undefined } };
 
 export default function AccountPage({ searchParams }: Props) {
-
-
   return (
     <>
       {searchParams.error && <Alert  icon={<IconAlertTriangle />} color="red">{searchParams.error}</Alert>}
@@ -18,7 +16,7 @@ export default function AccountPage({ searchParams }: Props) {
         </Alert>
       ) : null}
       <AccountInfo />
-      <ChangePassword  />
+      <ChangePassword />
     </>
   );
 }

@@ -34,7 +34,7 @@ export function LinksGroup({
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
     <Text
-      fz={'md'}
+      fz={"sm"}
       component={Link}
       href={link.link}
       className={classes.link}
@@ -47,6 +47,7 @@ export function LinksGroup({
   return (
     <>
       <UnstyledButton
+        variant="transparent"
         component={Link}
         href={link ?? "#"}
         className={classes.control}
@@ -56,7 +57,9 @@ export function LinksGroup({
             <ThemeIcon variant="light" size={30}>
               <Icon style={{ width: rem(18), height: rem(18) }} />
             </ThemeIcon>
-            <Box ml="md"><Text fz={'lg'} >{label}</Text> </Box>
+            <Box ml="md">
+              <Text fz={"sm"}>{label}</Text>
+            </Box>
           </Box>
         </Group>
       </UnstyledButton>
@@ -65,20 +68,20 @@ export function LinksGroup({
   );
 }
 
-const mockdata = {
-  label: "Releases",
-  icon: IconCalendarStats,
-  links: [
-    { label: "Upcoming releases", link: "/" },
-    { label: "Previous releases", link: "/" },
-    { label: "Releases schedule", link: "/" },
-  ],
-};
+// const mockdata = {
+//   label: "Releases",
+//   icon: IconCalendarStats,
+//   links: [
+//     { label: "Upcoming releases", link: "/" },
+//     { label: "Previous releases", link: "/" },
+//     { label: "Releases schedule", link: "/" },
+//   ],
+// };
 
-export function NavbarLinksGroup() {
-  return (
-    <Box mih={220} p="md">
-      <LinksGroup {...mockdata} />
-    </Box>
-  );
-}
+// export function NavbarLinksGroup() {
+//   return (
+//     <Box mih={220} p="md">
+//       <LinksGroup {...mockdata} />
+//     </Box>
+//   );
+// }

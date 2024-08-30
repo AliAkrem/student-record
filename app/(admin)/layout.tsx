@@ -1,12 +1,14 @@
 import React, { ReactNode } from "react";
 import { Header } from "../../component/navbar";
-import { Container,  Flex,  } from "@mantine/core";
-import { NavbarNested } from "../../component/sidbar";
+
 import { createClient } from "../../utils/supabase/server";
-import { redirect, usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 import PageTitle from "../../component/pageTitle";
 
-import classes from "./layout.module.css";
+
+
+import AppShellLayout from "../../component/AppShellLayout";
+import { AppShellMain } from "@mantine/core";
 
 export default async function AdminLayout({
   children,
@@ -22,30 +24,13 @@ export default async function AdminLayout({
 
   return (
     <>
-      <div
-        style={{
-          zIndex : 'calc(var(--mantine-z-index-max) + 1)',
-          position: "sticky",
-          top: 0,
-          backgroundColor : 'var(--mantine-color-default)'
-        }}
-      >
-        <Header />
-      </div>
-
-      <Flex w={"100%"} justify={"space-between"}  >
-        <div className={classes.sidbar}>
-          <NavbarNested />
-          
-        </div>
-
-        <Container fluid className={classes.pages}>
-          <div style={{ marginTop: "40px" }}>
-            <PageTitle />
-            {children}
-          </div>
-        </Container>
-      </Flex>
+      <AppShellLayout>
+       
+        <AppShellMain>
+          <PageTitle />
+          {children}
+        </AppShellMain>
+      </AppShellLayout>
     </>
   );
 }

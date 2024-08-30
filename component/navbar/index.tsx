@@ -1,5 +1,14 @@
 "use client";
-import { Group, Burger, Title, Drawer, Text, useMantineColorScheme, useComputedColorScheme } from "@mantine/core";
+import {
+  Group,
+  Burger,
+  Title,
+  Drawer,
+  Text,
+  useMantineColorScheme,
+  useComputedColorScheme,
+  AppShellHeader,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./navbar.module.css";
 import { ScrollArea } from "@mantine/core";
@@ -21,34 +30,31 @@ import { useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { modals } from "@mantine/modals";
 
-export function Header() {
-  const [opened, { toggle }] = useDisclosure(false);
+type Props = {
+  opened?: boolean;
+  toggle?: () => void;
+};
+
+export function Header({ opened, toggle }: Props) {
+  // const [opened, { toggle }] = useDisclosure(false);
 
   const pathname = usePathname();
 
   const leading =
     pathname.split("/")[1] !== "login" ? (
-      <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
+      <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
     ) : (
       <ColorSchemeButton />
     );
 
   return (
     <>
-      <div className={classes.header}>
-        <div className={classes.inner}>
-          <Group align="center">
-            {leading}
-            <Title order={4}>Student Management System</Title>
-          </Group>
-        </div>
-      </div>
-
-      {pathname.split("/")[1] !== "login" && (
-        <Drawer withCloseButton={false} opened={opened} onClose={toggle}>
-          <NavbarNested toggle={toggle} />
-        </Drawer>
-      )}
+      <AppShellHeader>
+        <Group h="100%" px="md">
+          {leading}
+          <Title order={4}>Student Management System</Title>
+        </Group>
+      </AppShellHeader>
     </>
   );
 }
@@ -91,13 +97,10 @@ export function NavbarNested({ toggle }: { toggle: () => void }) {
     </div>
   ));
 
-
-    
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
-
 
   const openLogoutModal = () =>
     modals.openConfirmModal({
@@ -106,7 +109,7 @@ export function NavbarNested({ toggle }: { toggle: () => void }) {
       children: <Text size="sm">Are you sure you want to sign-out?</Text>,
       labels: { confirm: "Sign-out", cancel: "Cancel" },
       confirmProps: { color: "red" },
-      onConfirm:  async () => {
+      onConfirm: async () => {
         await supabase.auth.signOut();
         router.refresh();
       },
@@ -114,20 +117,20 @@ export function NavbarNested({ toggle }: { toggle: () => void }) {
 
   return (
     <nav>
-      <ScrollArea pt={"40px"}>
+      <ScrollArea>
         <div>
           {links}
 
           <div onClick={openLogoutModal}>
             <LinksGroup {...{ label: "Logout", icon: IconLogout }} />
           </div>
-          <div 
-               onClick={() =>
-                setColorScheme(computedColorScheme === "light" ? "dark" : "light")
-              }
-            >
-              <LinksGroup {...{ label: "Theme", icon: ColorSchemeButton }} />
-            </div>
+          <div
+            onClick={() =>
+              setColorScheme(computedColorScheme === "light" ? "dark" : "light")
+            }
+          >
+            <LinksGroup {...{ label: "Theme", icon: ColorSchemeButton }} />
+          </div>
         </div>
       </ScrollArea>
     </nav>

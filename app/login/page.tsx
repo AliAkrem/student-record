@@ -1,6 +1,6 @@
 import React from "react";
 import { LoginCard } from "../../component/loginCard";
-import { Alert } from "@mantine/core";
+import { Alert, AppShell, AppShellMain } from "@mantine/core";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import { createClient } from "../../utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -25,9 +25,12 @@ export default async function LoginPage({ searchParams }: Props) {
           {searchParams.error}
         </Alert>
       ) : null}
-
-      <Header/>
-      <LoginCard />
+      <AppShell header={{ height: 60 }} padding="md">
+        <Header  />
+        <AppShellMain>
+          <LoginCard />
+        </AppShellMain>
+      </AppShell>
     </>
   );
 }

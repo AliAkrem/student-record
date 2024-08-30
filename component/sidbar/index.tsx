@@ -1,6 +1,11 @@
 "use client";
 
-import { ScrollArea, Text, useComputedColorScheme, useMantineColorScheme } from "@mantine/core";
+import {
+  ScrollArea,
+  Text,
+  useComputedColorScheme,
+  useMantineColorScheme,
+} from "@mantine/core";
 import {
   IconNotes,
   IconCalendarStats,
@@ -37,13 +42,20 @@ const mockdata = [
   { label: "account", icon: IconSettings, link: "/account" },
 ];
 
-export function NavbarNested() {
+export function NavbarNested({ toggle }: { toggle?: () => void }) {
   const supabase = createClient();
 
   const router = useRouter();
 
   const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <div
+      key={item.label}
+      onClick={() => {
+        toggle && toggle();
+      }}
+    >
+      <LinksGroup {...item} key={item.label} />
+    </div>
   ));
 
   const openLogoutModal = () =>
@@ -59,35 +71,32 @@ export function NavbarNested() {
       },
     });
 
-
-
-
-    const { setColorScheme } = useMantineColorScheme();
-    const computedColorScheme = useComputedColorScheme("light", {
-      getInitialValueInEffect: true,
-    });
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("light", {
+    getInitialValueInEffect: true,
+  });
 
   return (
     <>
       <nav className={classes.navbar}>
-        <ScrollArea className={classes.links}>
-          <div className={classes.linksInner}>
+        <ScrollArea>
+          <div className={classes.links}>
             {links}
             <div onClick={openLogoutModal}>
               <LinksGroup {...{ label: "Logout", icon: IconLogout }} />
             </div>
 
-            <div 
-               onClick={() =>
-                setColorScheme(computedColorScheme === "light" ? "dark" : "light")
+            <div
+              onClick={() =>
+                setColorScheme(
+                  computedColorScheme === "light" ? "dark" : "light"
+                )
               }
             >
               <LinksGroup {...{ label: "Theme", icon: ColorSchemeButton }} />
             </div>
           </div>
         </ScrollArea>
-
-        <div className={classes.footer}></div>
       </nav>
     </>
   );

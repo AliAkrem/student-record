@@ -21,7 +21,26 @@ The Student Record System is a web-based application designed to efficiently man
   ### admin credentials 
 - **email:** `admin@univ.com`
 - **password:** `'3p&;_;U*g'rsqe`
-  
+- 
+## progress of the project
+
+Below are the features implemented :
+
+| Feature                   | state | 
+|---------------------------|:-----:|
+| SignIn                    |  ✅   |
+| change password           |  ✅   |
+| course CRUD               |  ✅   |
+| subject CRUD              |  ✅   |
+| categorise by season      |  🚧   |
+| register students         |  🚧   |
+| students CRUD             |  🚧   |
+| invite students by email  |  🚧   |
+| student SignIn            |  🚧   |
+| student Account           |  🚧   |
+
+- ✅ Tested
+- 🚧 Planned  
   
 
 ## Installation
